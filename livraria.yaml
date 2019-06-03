@@ -1,0 +1,517 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Livro API
+  # put the contact info for your development or API team
+  contact:
+    email: you@your-company.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+
+paths:
+  /livros:
+    get:
+      tags:
+      - admins
+      summary: searches Livros
+      operationId: searchLivros
+      description: |
+        Retorna uma lista de livros
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: searchString
+        description: pass an optional search string for looking up livros
+        required: false
+        type: string
+      - in: query
+        name: skip
+        description: number of records to skip for pagination
+        type: integer
+        format: int32
+        minimum: 0
+      - in: query
+        name: limit
+        description: maximum number of records to return
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 50
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/livros'
+        400:
+          description: bad input parameter
+    delete:
+      tags:
+      - admins
+      summary: Deletes a livro
+      operationId: deleteLivro
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: livroId
+        in: path
+        description: livro id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: livro deletado
+        400:
+          description: Invalid ID supplied
+        404:
+          description: livro not found
+    put:
+      tags:
+      - admins
+      summary: Update an existing livro
+      operationId: updateLivro
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: livro object that needs to be added to the store
+        required: true
+        schema: 
+          $ref: '#/definitions/livros'
+      responses:
+        200:
+          description: Livro alterado
+        400:
+          description: invalid livro
+        404:
+          description: livro not faund
+    post:
+      tags:
+      - admins
+      summary: adds an livros item
+      operationId: addLivro
+      description: Adds an item to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: livroItem
+        description: livro item to add
+        schema:
+          $ref: '#/definitions/livros'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+  /categorias:
+    get:
+      tags:
+      - admins
+      summary: searches categorias
+      operationId: searchCategorias
+      description: |
+        Retorna uma lista de Categorias
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: searchString
+        description: pass an optional search string for looking up Categorias
+        required: false
+        type: string
+      - in: query
+        name: skip
+        description: number of records to skip for pagination
+        type: integer
+        format: int32
+        minimum: 0
+      - in: query
+        name: limit
+        description: maximum number of records to return
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 50
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/categorias'
+        400:
+          description: bad input parameter
+    delete:
+      tags:
+      - admins
+      summary: Deletes a Categoria
+      operationId: deleteCategoria
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: categoriaId
+        in: path
+        description: categoria id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: categoria deletada
+        400:
+          description: Invalid ID supplied
+        404:
+          description: categoria not found
+    put:
+      tags:
+      - admins
+      summary: Update an existing Categoria
+      operationId: updateCategoria
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: categoria object that needs to be added to the store
+        required: true
+        schema: 
+          $ref: '#/definitions/categorias'
+      responses:
+        200:
+          description: Categoria alterada
+        400:
+          description: invalid categoria
+        404:
+          description: categoria not faund
+    post:
+      tags:
+      - admins
+      summary: adds an categoria item
+      operationId: addCategoria
+      description: Adds an item to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: categoriaItem
+        description: categoria item to add
+        schema:
+          $ref: '#/definitions/categorias'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+  /autores:
+    get:
+      tags:
+      - admins
+      summary: searches autores
+      operationId: searchAutores
+      description: |
+        Retorna uma lista de Autores
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: searchString
+        description: pass an optional search string for looking up Autores
+        required: false
+        type: string
+      - in: query
+        name: skip
+        description: number of records to skip for pagination
+        type: integer
+        format: int32
+        minimum: 0
+      - in: query
+        name: limit
+        description: maximum number of records to return
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 50
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/autores'
+        400:
+          description: bad input parameter
+    delete:
+      tags:
+      - admins
+      summary: Deletes a Autor
+      operationId: deleteAutor
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: autorId
+        in: path
+        description: autor id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: autor deletada
+        400:
+          description: Invalid ID supplied
+        404:
+          description: autor not found
+    put:
+      tags:
+      - admins
+      summary: Update an existing autor
+      operationId: updateAutor
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: autor object that needs to be added to the store
+        required: true
+        schema: 
+          $ref: '#/definitions/autores'
+      responses:
+        200:
+          description: Autor alterad0
+        400:
+          description: invalid autor
+        404:
+          description: autor not faund
+    post:
+      tags:
+      - admins
+      summary: adds an autor item
+      operationId: addAutor
+      description: Adds an item to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: autorItem
+        description: autor item to add
+        schema:
+          $ref: '#/definitions/autores'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+  /editoras:
+    get:
+      tags:
+      - admins
+      summary: searches editoras
+      operationId: searchEditoras
+      description: |
+        Retorna uma lista de editoras
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: searchString
+        description: pass an optional search string for looking up editoras
+        required: false
+        type: string
+      - in: query
+        name: skip
+        description: number of records to skip for pagination
+        type: integer
+        format: int32
+        minimum: 0
+      - in: query
+        name: limit
+        description: maximum number of records to return
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 50
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/editoras'
+        400:
+          description: bad input parameter
+    delete:
+      tags:
+      - admins
+      summary: Deletes a editora
+      operationId: deleteEditora
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: editoraId
+        in: path
+        description: editora id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: editora deletada
+        400:
+          description: Invalid ID supplied
+        404:
+          description: editora not found
+    put:
+      tags:
+      - admins
+      summary: Update an existing editora
+      operationId: updateEditora
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: editora object that needs to be added to the store
+        required: true
+        schema: 
+          $ref: '#/definitions/editoras'
+      responses:
+        200:
+          description: editora alterado
+        400:
+          description: invalid editora
+        404:
+          description: editora not faund
+    post:
+      tags:
+      - admins
+      summary: adds an editora item
+      operationId: addEditora
+      description: Adds an item to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: editoraItem
+        description: editora item to add
+        schema:
+          $ref: '#/definitions/editoras'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+definitions:
+  livros:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: Senhor dos Aneis
+  categorias:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: história
+  autores:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: Peter Jackson
+  editoras:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: Abril
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /frenow6/Livraria/1.0.0
+schemes:
+ - https
+# Added by API Auto Mocking Plugin
+basePath: /frenow/livros/1.0.0
